@@ -1,0 +1,43 @@
+version: '2.3'
+
+networks:
+  dionaea_local:
+
+services:
+  # Dionaea service
+  dionaea:
+    build: .
+    container_name: dionaea
+    stdin_open: true
+    tty: true
+    restart: always
+    networks:
+     - dionaea_local
+    ports:
+     - "20:20"      # FTP Data
+     - "21:21"      # FTP Control
+     - "42:42"      # ARPA Host Name Server
+     - "69:69/udp"  # TFTP
+     - "81:81"      # HTTP Alternate
+     - "135:135"    # MS RPC
+     - "443:443"    # HTTPS
+     - "445:445"    # SMB
+     - "1433:1433"  # Microsoft SQL Server
+     - "1723:1723"  # PPTP
+     - "1883:1883"  # MQTT
+     - "3306:3306"  # MySQL
+     # - "5060:5060"    # SIP
+     # - "5060:5060/udp" # SIP/UDP
+     # - "5061:5061"    # SIP-TLS
+     - "27017:27017" # MongoDB
+    image: "dtagdevsec/dionaea:2204"
+    read_only: true
+    volumes:
+     - /data/dionaea/roots/ftp:/opt/dionaea/var/dionaea/roots/ftp
+     - /data/dionaea/roots/tftp:/opt/dionaea/var/dionaea/roots/tftp
+     - /data/dionaea/roots/www:/opt/dionaea/var/dionaea/roots/www
+     - /data/dionaea/roots/upnp:/opt/dionaea/var/dionaea/roots/upnp
+     - /data/dionaea:/opt/dionaea/var/dionaea
+     - /data/dionaea/binaries:/opt/dionaea/var/dionaea/binaries
+     - /data/dionaea/log:/opt/dionaea/var/log
+     - /data/dionaea/rtp:/opt/dionaea/var/dionaea/rtp
